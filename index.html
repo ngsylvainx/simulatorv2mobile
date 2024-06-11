@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Advocacy Simulator</title>
+    <style>
+        /* Global Styles */
+        body, html {
+            font-family: 'Karla', Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .simulator {
+            background-color: #f1f5fc;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            width: 90%; /* Use 90% width on mobile */
+            max-width: 28.8rem; /* Maintain maximum width */
+        }
+
+        .simulator__section {
+            margin-bottom: 1rem;
+            margin-top: 1rem;
+        }
+
+        .simulator__label {
+            color: #4a5568;
+            font-weight: 1000;
+            display: inline-block;
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .simulator__slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .simulator__icon {
+            height: 1.5rem;
+        }
+
+        .simulator__min {
+            font-size: 0.875rem;
+            color: #595959;
+            margin-left: 0.5rem;
+            margin-right: 0.2rem;
+        }
+
+        .simulator__max {
+            font-size: 0.875rem;
+            color: #595959;
+            margin-left: 0.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            width: calc(100% - 4rem);
+        }
+
+        .simulator__slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 0.75rem;
+            background: linear-gradient(to right, rgb(55, 112, 255) 0%, #608CFA var(--slider-value), #DBE4FE var(--slider-value), #DBE4FE 100%);
+            border-radius: 0.25rem;
+            outline: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .simulator__slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            background: #fff;
+            border: 1px solid #608CFA;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s;
+        }
+
+        .simulator__slider::-moz-range-thumb {
+            width: 1.25rem;
+            height: 1.25rem;
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s;
+        }
+
+        .slider-value {
+            color: #608CFA;
+            border-radius: 0.25rem;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .slider-value.fixed {
+            position: static;
+            display: inline-block;
+            margin-left: 0.125rem;
+        }
+
+        .simulator__result {
+            background-color: #608CFA;
+            color: #fff;
+            text-align: center;
+            font-weight: 500;
+            padding: 0.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            width: auto; /* width adapts to content */
+            display: inline-block; /* make the element fit the content */
+        }
+
+        .simulator__total-views {
+            font-weight: 1000;
+            font-size: 1.25rem;
+        }
+
+        @media (max-width: 600px) {
+            .simulator {
+                width: 100%; /* Take full width on small screens */
+                padding: 1rem; /* Adjust padding */
+            }
+
+            .simulator__label {
+                font-size: 0.875rem; /* Slightly larger text for readability on small screens */
+            }
+
+            .simulator__slider {
+                height: 1rem; /* Larger slider for better touch control */
+            }
+
+            .simulator__slider::-webkit-slider-thumb, .simulator__slider::-moz-range-thumb {
+                width: 1.5rem;
+                height: 1.5rem; /* Larger thumb for better touch control */
+            }
+
+            .slider-value {
+                font-size: 1.25rem; /* Larger value display */
+            }
+
+            .simulator__total-views {
+                font-size: 1.5rem; /* Larger result display */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="simulator">
+        <div class="simulator__section">
+            <label for="numEmployees" class="simulator__label">Number of employees:</label>
+            <span class="slider-value fixed" id="numEmployeesDisplay">25</span>
+            <div class="simulator__slider-container">
+                <img src="angry.svg" alt="indifferent" class="simulator__icon">
+                <span class="simulator__min">1</span>
+                <div class="slider-wrapper">
+                    <input type="range" id="numEmployees" min="1" max="50" value="25" class="simulator__slider">
+                </div>
+                <span class="simulator__max">50</span>
+                <img src="smiley.svg" alt="happy" class="simulator__icon">
+            </div>
+        </div>
+        <div class="simulator__section">
+            <label for="numPosts" class="simulator__label">Average Posts per Employee / month:</label>
+            <span class="slider-value fixed" id="numPostsDisplay">10</span>
+            <div class="simulator__slider-container">
+                <img src="angry.svg" alt="indifferent" class="simulator__icon">
+                <span class="simulator__min">1</span>
+                <div class="slider-wrapper">
+                    <input type="range" id="numPosts" min="1" max="20" value="10" class="simulator__slider">
+                </div>
+                <span class="simulator__max">20</span>
+                <img src="smiley.svg" alt="happy" class="simulator__icon">
+            </div>
+        </div>
+        <div class="simulator__section">
+            <label for="viewsPerPost" class="simulator__label">Average Views per Post:</label>
+            <span class="slider-value fixed" id="viewsPerPostDisplay">11500</span>
+            <div class="simulator__slider-container">
+                <img src="angry.svg" alt="indifferent" class="simulator__icon">
+                <span class="simulator__min">1k</span>
+                <div class="slider-wrapper">
+                    <input type="range" id="viewsPerPost" min="1000" max="20000" value="11500" class="simulator__slider">
+                </div>
+                <span class="simulator__max">20k</span>
+                <img src="smiley.svg" alt="happy" class="simulator__icon">
+            </div>
+        </div>
+        <div class="simulator__result">
+            Total Views per month: <span id="totalViews" class="simulator__total-views">2875000</span>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const numEmployees = document.getElementById('numEmployees');
+            const numPosts = document.getElementById('numPosts');
+            const viewsPerPost = document.getElementById('viewsPerPost');
+
+            const numEmployeesDisplay = document.getElementById('numEmployeesDisplay');
+            const numPostsDisplay = document.getElementById('numPostsDisplay');
+            const viewsPerPostDisplay = document.getElementById('viewsPerPostDisplay');
+            const totalViews = document.getElementById('totalViews');
+
+            function calculateTotalViews() {
+                const total = numEmployees.value * numPosts.value * viewsPerPost.value;
+                totalViews.textContent = total.toLocaleString();
+            }
+
+                        function updateSliderBackground(slider, displayElement) {
+                const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+                slider.style.setProperty('--slider-value', value + '%');
+                displayElement.textContent = slider.value;
+            }
+
+            numEmployees.addEventListener('input', function () {
+                calculateTotalViews();
+                updateSliderBackground(numEmployees, numEmployeesDisplay);
+            });
+
+            numPosts.addEventListener('input', function () {
+                calculateTotalViews();
+                updateSliderBackground(numPosts, numPostsDisplay);
+            });
+
+            viewsPerPost.addEventListener('input', function () {
+                calculateTotalViews();
+                updateSliderBackground(viewsPerPost, viewsPerPostDisplay);
+            });
+
+            // Initial background update
+            updateSliderBackground(numEmployees, numEmployeesDisplay);
+            updateSliderBackground(numPosts, numPostsDisplay);
+            updateSliderBackground(viewsPerPost, viewsPerPostDisplay);
+
+            calculateTotalViews();
+        });
+    </script>
+</body>
+</html>
